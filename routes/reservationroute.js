@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const Reservation = requie('../models/bookingmodel.js')
+const Reservation = require('../models/bookingmodel.js')
 
 
 router.route('/').get((req,res) => {
@@ -9,9 +9,14 @@ router.route('/').get((req,res) => {
 })
 
 router.route('/add').post((req,res) => {
-    const name = req.body.name;
-
-    const newReservation = new Reservation({name})
+   const name = req.body.name
+   const email = req.body.email
+   const phone = req.body.phone
+   const date = req.body.date
+   const people = req.body.people
+   const time = req.body.time
+    
+    const newReservation = new Reservation({name, email, phone, date, people, time})
 
     newReservation.save()
     .then(() => res.json('name added!'))

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const Schema = mongoose.schema;
+const Schema = mongoose.Schema;
 
 const reservationSchema = new Schema({
    name: {
@@ -11,7 +11,7 @@ const reservationSchema = new Schema({
        minlength: 2
    },
    email: {
-       type: email,
+       type: String,
        required: true,
        minlength: 6,
        trim: true
@@ -25,7 +25,7 @@ const reservationSchema = new Schema({
        type: Date,
        default: Date.now
    },
-   peaple: {
+   people: {
         type: Number,
         min: 1,
         max: 6,
@@ -35,7 +35,7 @@ const reservationSchema = new Schema({
        required: true
    }
 }, {
-    timestamp: true
+    timestamps: true
 })
 
 

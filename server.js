@@ -13,7 +13,7 @@ app.use(express.json())
 
 const reservationsRouter = require('./routes/reservationroute')
 
-app.use('/reservation', reservationsRouter)
+app.use('/reservations', reservationsRouter)
 
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true})
