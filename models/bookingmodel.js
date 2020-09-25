@@ -39,15 +39,8 @@ const reservationSchema = new Schema({
 })
 
 
-// sudgestion on a module
+const Reservation = mongoose.model('Reservation', reservationSchema);
+
+module.exports = Reservation;
 
 
-const bookingSchema = mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
-    startTime: {type:Number, required:true},
-    endTime: {type:Number, required:true},
-    clientName: {type:String, required:true}
-    
-});
-
-const Booking = mongoose.model('Booking', bookingSchema);
