@@ -11,9 +11,12 @@ const port = process.env.PORT || 5000
 app.use(cors())
 app.use(express.json())
 
-const reservationsRouter = require('./routes/reservationroute')
+//const reservationsRouter = require('./routes/reservationroute')
+//app.use('/reservations', reservationsRouter)
 
-app.use('/reservations', reservationsRouter)
+const router = require('./routes/index')
+
+app.use('/', router)
 
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true})
