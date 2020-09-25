@@ -6,7 +6,6 @@ const reservationSchema = new Schema({
    name: {
        type: String,
        required: true,
-       unique: true,
        trim: true,
        minlength: 2
    },
@@ -23,7 +22,7 @@ const reservationSchema = new Schema({
    },
    date: {
        type: Date,
-       default: Date.now
+       default: Date.now()
    },
    people: {
         type: Number,
