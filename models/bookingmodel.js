@@ -25,15 +25,22 @@ const reservationSchema = new Schema({
        type: Date,
        default: Date.now
    },
+   peaple: {
+        type: Number,
+        min: 1,
+        max: 6,
+   },
    time: {
        type: String,
-       firstTime: '18.00',
-       lastTime: '21.00',
        required: true
    }
 }, {
     timestamp: true
 })
+
+
+// sudgestion on a module
+
 
 const bookingSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
