@@ -95,16 +95,19 @@ const store = async (req, res) =>{
  *  PUT /:id
  */
 const update = async (req, res) =>{
-    Reservation.findByIdAndUpdate(req.params.id).then(reservation => {
-        reservation.name = req.body.name
-        reservation.email = req.body.email
-        reservation.phone = req.body.phone
-        reservation.date = Date.parse(req.body.date)
-        reservation.people = req.body.people
-        reservation.time = req.body.time
-
-        reservation.save().then(() => res.json('reservation updated'))
-        .catch(err => res.status(400).json('error updating reservation', + err))
+    Reservation.findByIdAndUpdate(req.params.id, req.body, {new:true})
+    
+    .then(reservation => {
+        if(!reservation){
+            res.sendStatus(404);
+            return;
+        }
+        res.send({
+            status: 'success',
+            data: {
+                reservation
+            }
+        })
     })
     .catch(err => {
         res.status(500).send({
