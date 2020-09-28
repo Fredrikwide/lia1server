@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-
 const Schema = mongoose.Schema;
 
 const reservationSchema = new Schema({
@@ -22,7 +21,8 @@ const reservationSchema = new Schema({
    },
    date: {
        type: Date,
-       default: Date.now()
+       default: Date.now(),
+       require: true
    },
    people: {
         type: Number,

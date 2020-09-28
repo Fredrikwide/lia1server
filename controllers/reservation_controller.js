@@ -15,11 +15,16 @@ const index = async (req, res) =>{
         res.send({
             status: 'success',
             data: {
-                reservations,
+                reservations
             }
         })
     })
-    .catch(err => res.status(400).json('Error: ', + err))
+    .catch(err => {
+        res.status(500).send({
+            status: 'fail',
+            message: 'Exception thorown when trying to get all reservation'
+        })
+    })
 }
 
 
@@ -31,14 +36,23 @@ const index = async (req, res) =>{
 const show = async (req, res) =>{
     Reservation.findById(req.params.id)
     .then(reservation => {
+        if(!reservation){
+            res.sendStatus(404);
+            return;
+        }
         res.send({
             status: 'success',
             data: {
-                reservation,
+                reservation
             }
         })
     })
-    .catch(err => res.status(400).json(err))
+    .catch(err => {
+        res.status(500).send({
+            status: 'fail',
+            message: 'Exception thorown when trying to get a reservation'
+        })
+    })
 }
 
 /**
@@ -59,8 +73,20 @@ const store = async (req, res) =>{
     const newReservation = new Reservation({...reservation})
 
     newReservation.save()
-    .then(() => res.json('reservation added!'))
-    .catch(err => res.status(400).json('Error: ' + err))
+    .then( reservation => {
+        res.send({
+            status: 'success',
+            data: {
+                reservation
+            }
+        })
+    })
+    .catch(err => {
+        res.status(500).send({
+            status: 'fail',
+            message: 'Exception thorown when trying to create a reservation'
+        })
+    })
 }
 
 /**
@@ -80,7 +106,12 @@ const update = async (req, res) =>{
         reservation.save().then(() => res.json('reservation updated'))
         .catch(err => res.status(400).json('error updating reservation', + err))
     })
-    .catch(err => res.status(400).json('error something wrong: ', + err))
+    .catch(err => {
+        res.status(500).send({
+            status: 'fail',
+            message: 'Exception thorown when trying to update a reservation'
+        })
+    })
 }
 
 /**
@@ -91,7 +122,12 @@ const update = async (req, res) =>{
 const destroy = async (req, res) =>{
     Reservation.findByIdAndDelete(req.params.id)
     .then(() => res.json('deleted reservation!'))
-    .catch(err => res.status(400).json('error somehting wrong with deletion:', + err))
+    .catch(err => {
+        res.status(500).send({
+            status: 'fail',
+            message: 'Exception thorown when trying to delete a reservation'
+        })
+    })
 }
 
 const search = async (req, res) =>{

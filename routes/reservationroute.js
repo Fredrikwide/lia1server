@@ -1,3 +1,7 @@
+// THIS ROUTING IS NOT USING AND WILL BE REMOVED
+
+
+
 const router = require('express').Router()
 const Reservation = require('../models/bookingmodel.js')
 
