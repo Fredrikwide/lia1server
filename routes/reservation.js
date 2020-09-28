@@ -22,4 +22,7 @@
  //** Delete a reservation */
  router.delete('/:id', reservationController.destroy)
 
+ //** Fin a reservation by date */
+ router.delete('/date', reservationController.date)
+
  module.exports = router;

@@ -82,10 +82,17 @@ const destroy = async (req, res) =>{
     .catch(err => res.status(400).json('error somehting wrong with deletion:', + err))
 }
 
+const date = async (req, res) => {
+    Reservation.find()
+    .then(reservations => res.json(reservations))
+    .catch(err => res.status(400).json('Error: ', + err))
+}
+
 module.exports = {
     index,
     show,
     store,
     update,
     destroy,
+    date
 }
