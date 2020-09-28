@@ -11,7 +11,14 @@ const Reservation = require('../models/bookingmodel')
 const index = async (req, res) =>{
     console.log(req.params.id)
     Reservation.find()
-    .then(reservations => res.json(reservations))
+    .then(reservations => {
+        res.send({
+            status: 'success',
+            data: {
+                reservations,
+            }
+        })
+    })
     .catch(err => res.status(400).json('Error: ', + err))
 }
 
@@ -24,7 +31,12 @@ const index = async (req, res) =>{
 const show = async (req, res) =>{
     Reservation.findById(req.params.id)
     .then(reservation => {
-        res.json(reservation)
+        res.send({
+            status: 'success',
+            data: {
+                reservation,
+            }
+        })
     })
     .catch(err => res.status(400).json(err))
 }
@@ -82,17 +94,15 @@ const destroy = async (req, res) =>{
     .catch(err => res.status(400).json('error somehting wrong with deletion:', + err))
 }
 
-const date = async (req, res) => {
-    Reservation.find()
-    .then(reservations => res.json(reservations))
-    .catch(err => res.status(400).json('Error: ', + err))
+const search = async (req, res) =>{
+
 }
+
 
 module.exports = {
     index,
     show,
     store,
     update,
-    destroy,
-    date
+    destroy
 }
