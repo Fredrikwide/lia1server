@@ -20,6 +20,6 @@
  router.put('/:id', reservationController.update)
 
  //** Delete a reservation */
- router.delete('/', reservationController.destroy)
+ router.delete('/:id', reservationController.destroy)
 
  module.exports = router;

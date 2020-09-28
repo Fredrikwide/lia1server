@@ -1,13 +1,14 @@
 
 const router = require('express').Router()
-const reservationRouter = require('./reservation')
+const reservation = require('./reservation')
 
 //** GET */
-
 router.get('/', (req, res) => {
     res.send({status: 'sucess'});
 });
 
-router.use('/reservation', reservationRouter);
+
+// "url/reservation" will get all reservation 
+router.use('/reservation', reservation);
 
 module.exports = router;
