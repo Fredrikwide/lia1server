@@ -10,6 +10,9 @@
  //** Get all reservation */
  router.get('/', reservationController.index)
 
+ /* Search for movies */
+router.get('/search', reservationController.search);
+
  //** Get a reservation */
  router.get('/:reservation', reservationController.show)
 

@@ -28,6 +28,16 @@ const index = async (req, res) =>{
 
 
 /**
+ * Search for movies
+ */
+const search = async (req, res) => {
+	console.log("Want to search for:", req.query.q);
+	res.send({ status: 'success' });
+}
+
+
+
+/**
  *  GET a specific reservation
  * 
  *  GET /:reservation
@@ -134,22 +144,16 @@ const destroy = async (req, res) =>{
     })
 }
 
-const search = async (req, res) =>{
-
-}
-
 const getReservationFilter = reservation =>{
-    return {
-        $or: [
-            {slug: reservation},
-            {_id: reservation}
-        ]
-    }
+    return (/^[0-9a-fA-F]{24}$/.test(reservation))
+		? { _id: reservation }
+		: { slug: reservation };
 }
 
 
 module.exports = {
     index,
+    search,
     show,
     store,
     update,
