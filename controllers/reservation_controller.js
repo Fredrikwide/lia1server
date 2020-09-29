@@ -144,6 +144,8 @@ const destroy = async (req, res) =>{
     })
 }
 
+
+
 const getReservationFilter = reservation =>{
     return (/^[0-9a-fA-F]{24}$/.test(reservation))
 		? { _id: reservation }
