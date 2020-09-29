@@ -1,5 +1,10 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const slug  = require('mongoose-slug-generator');
+
 const Schema = mongoose.Schema;
+
+//tell mongoose to use the slug package as a plugin
+mongoose.plugin(slug);
 
 const reservationSchema = new Schema({
    name: {
@@ -7,6 +12,10 @@ const reservationSchema = new Schema({
        required: true,
        trim: true,
        minlength: 2
+   },
+   slug: {
+        type: String,
+        slug: 'name',
    },
    email: {
        type: String,
