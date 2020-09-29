@@ -1,6 +1,6 @@
 # Reservations Database API Endpoints
 
-Dokument lin: <https://github.com/Fredrikwide/lia1server>
+Dokument link: <https://github.com/Fredrikwide/lia1server>
 
 ## Endpoints
 

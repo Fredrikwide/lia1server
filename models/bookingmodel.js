@@ -11,11 +11,14 @@ const reservationSchema = new Schema({
        type: String,
        required: true,
        trim: true,
-       minlength: 2
+       minlength: 2,
+       unique: false
    },
    slug: {
         type: String,
         slug: 'name',
+        unique: true,
+        slug_padding_size: 4,
    },
    email: {
        type: String,

@@ -1,6 +1,6 @@
 // movie controller
 
-const router = require('express').Router()
+//const models = require('../models');
 const Reservation = require('../models/bookingmodel')
 
 /**
@@ -9,7 +9,6 @@ const Reservation = require('../models/bookingmodel')
  *  GET / 
  */
 const index = async (req, res) =>{
-    console.log(req.params.id)
     Reservation.find()
     .then(reservations => {
         res.send({
@@ -22,7 +21,7 @@ const index = async (req, res) =>{
     .catch(err => {
         res.status(500).send({
             status: 'fail',
-            message: 'Exception thorown when trying to get all reservation'
+            message: 'Exception thorown when trying to get all reservation', err
         })
     })
 }
@@ -31,10 +30,11 @@ const index = async (req, res) =>{
 /**
  *  GET a specific reservation
  * 
- *  GET /:id
+ *  GET /:reservation
  */
 const show = async (req, res) =>{
-    Reservation.findById(req.params.id)
+    //Reservation.findOne({slug: req.params.reservation})
+    Reservation.findOne(getReservationFilter(req.params.reservation))
     .then(reservation => {
         if(!reservation){
             res.sendStatus(404);
@@ -50,7 +50,7 @@ const show = async (req, res) =>{
     .catch(err => {
         res.status(500).send({
             status: 'fail',
-            message: 'Exception thorown when trying to get a reservation'
+            message: 'Exception thorown when trying to get a reservation', err
         })
     })
 }
@@ -58,7 +58,7 @@ const show = async (req, res) =>{
 /**
  *  Create a reservation
  * 
- *  POST /:id
+ *  POST /:reservation
  */
 const store = async (req, res) =>{
     const reservation = {
@@ -84,18 +84,19 @@ const store = async (req, res) =>{
     .catch(err => {
         res.status(500).send({
             status: 'fail',
-            message: 'Exception thorown when trying to create a reservation'
+            message: 'Exception thorown when trying to create a reservation', err
         })
     })
+    console.log(newReservation)
 }
 
 /**
  *  Update a specific reservation
  * 
- *  PUT /:id
+ *  PUT /:reservation
  */
 const update = async (req, res) =>{
-    Reservation.findByIdAndUpdate(req.params.id, req.body, {new:true})
+    Reservation.findOneAndUpdate(getReservationFilter(req.params.reservation), req.body, {new:true})
     
     .then(reservation => {
         if(!reservation){
@@ -112,7 +113,7 @@ const update = async (req, res) =>{
     .catch(err => {
         res.status(500).send({
             status: 'fail',
-            message: 'Exception thorown when trying to update a reservation'
+            message: 'Exception thorown when trying to update a reservation', err
         })
     })
 }
@@ -120,10 +121,10 @@ const update = async (req, res) =>{
 /**
  *  Delete a reservation
  * 
- *  DELETE /:id
+ *  DELETE /:reservation
  */
 const destroy = async (req, res) =>{
-    Reservation.findByIdAndDelete(req.params.id)
+    Reservation.findOneAndDelete(getReservationFilter(req.params.reservation))
     .then(() => res.json('deleted reservation!'))
     .catch(err => {
         res.status(500).send({
@@ -135,6 +136,15 @@ const destroy = async (req, res) =>{
 
 const search = async (req, res) =>{
 
+}
+
+const getReservationFilter = reservation =>{
+    return {
+        $or: [
+            {slug: reservation},
+            {_id: reservation}
+        ]
+    }
 }
 
 
