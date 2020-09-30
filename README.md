@@ -1,25 +1,32 @@
-# LIA1-server
-backend for LIA project 1
+# Reservations Database API Endpoints
 
+Dokument link: <https://github.com/Fredrikwide/lia1server>
 
-# ENDPOINTS
+## Endpoints
 
-## GET ALL RESERVATIONS 
+| Endpoints     | Model         |
+|---------------|---------------|
+| /reservation  | Reservation   |
+| /search       | Serach        |
 
-GET /reservations/
+## `/reservation`
 
-## GET A SPECIFIC RESERVATION
+### `GET /reservation`
 
-GET /reservations/:Id
+Get all reservation
 
-## DELETE A RESERVATION
+### `GET /reservation/:id`
 
-DELETE /reservations/:Id
+Get a reservation by ID
 
-## UPDATE A RESERVATION
+### `POST /reservation`
 
-POST /reservations/update/:Id
+Creat a new reservation
 
-## ADD A RESERVATION 
+### `PUT /reservation/:id`
 
-POST /reservations/add
+Uppdate a reservation by ID
+
+### `DELETE /reservation/:id`
+
+Delete a reservation by ID

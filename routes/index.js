@@ -1,6 +1,7 @@
 
-const router = require('express').Router()
-const reservation = require('./reservation')
+const express = require('express');
+const router = express.Router();
+
 
 //** GET */
 router.get('/', (req, res) => {
@@ -8,11 +9,9 @@ router.get('/', (req, res) => {
 });
 
 
-// "url/reservation" will get all reservation 
-router.use('/reservation', reservation);
+// "url/reservation" will get the function book a table and show if its any avibile table
+router.use('/reservation', require('./reservation'));
+router.use('/admin', require('./admin'));
 
-
-// "url/search" will search all reservation 
-//router.use('/search', );
 
 module.exports = router;

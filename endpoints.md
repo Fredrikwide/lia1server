@@ -6,27 +6,35 @@ Dokument link: <https://github.com/Fredrikwide/lia1server>
 
 | Endpoints     | Model         |
 |---------------|---------------|
+| /admin        | Admin         |
 | /reservation  | Reservation   |
-| /search       | Serach        |
 
-## `/reservation`
+## `/admin`
 
-### `GET /reservation`
+### `GET /admin/reservation`
 
-Get all reservation
+Get all reservation in admin mode
 
-### `GET /reservation/:id`
+### `GET admin/reservation/:id`
 
-Get a reservation by ID
+Get a reservation by ID in admin mode
+
+### `POST admin//reservation`
+
+Creat a new reservation in admin mode
+
+### `PUT /admin/reservation/:id`
+
+Uppdate a reservation by ID in admin mode
+
+### `DELETE /admin/reservation/:id`
+
+Delete a reservation by ID in admin mode
+
+-----------------
+
+## /reservation
 
 ### `POST /reservation`
 
-Creat a new reservation
-
-### `PUT /reservation/:id`
-
-Uppdate a reservation by ID
-
-### `DELETE /reservation/:id`
-
-Delete a reservation by ID
+Create a new reservation on frontend
