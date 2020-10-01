@@ -1,13 +1,13 @@
 # Reservations Database API Endpoints
 
-Dokument link: <https://github.com/Fredrikwide/lia1server>
+Document link: <https://github.com/Fredrikwide/lia1server>
 
 ## Endpoints
 
-| Endpoints     | Model         |
-|---------------|---------------|
-| /admin        | Admin         |
-| /reservation  | Reservation   |
+| Endpoints    | Model       |
+| ------------ | ----------- |
+| /admin       | Admin       |
+| /reservation | Reservation |
 
 ## `/admin`
 

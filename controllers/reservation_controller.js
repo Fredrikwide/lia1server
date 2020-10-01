@@ -11,32 +11,32 @@ const AVAILABLE_TABLE = 15
  */
 
 
- const availableTable = async (req, res) =>{
+const availableTable = async (req, res) => {
     Reservation.find({
         "date": req.params.date,
     })
-    .then(reservations => {
-        console.log('we have', reservations.length, 'reservation at this time')
-        if(reservations.length < AVAILABLE_TABLE) {
-            res.send({
-                status: 'success',
-                data: {
-                    "avilable_table": AVAILABLE_TABLE - reservations.length
-                }
-            })
-        } else{
-            res.send({
+        .then(reservations => {
+            console.log('we have', reservations.length, 'reservation at this time')
+            if (reservations.length < AVAILABLE_TABLE) {
+                res.send({
+                    status: 'success',
+                    data: {
+                        "avilable_table": AVAILABLE_TABLE - reservations.length
+                    }
+                })
+            } else {
+                res.send({
+                    status: 'fail',
+                    message: 'no availvle table at this time'
+                })
+            }
+        }).catch(err => {
+            res.status(500).send({
                 status: 'fail',
-                message: 'no availvle table at this time'
+                message: 'Exception thrown when trying to find table at:' + req.params.date
             })
-        }
-    }).catch(err => {
-        res.status(500).send({
-            status: 'fail',
-            message: 'Exception thrown when trying to find table at:' + req.params.date
         })
-    })
- }
+}
 
 
 /**
@@ -44,33 +44,34 @@ const AVAILABLE_TABLE = 15
  * 
  *  POST /:reservation
  */
-const store = async (req, res) =>{
+const store = async (req, res) => {
     const reservation = {
-        name: req.body.name,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
         email: req.body.email,
         phone: req.body.phone,
         date: Date.parse(req.body.date),
-        people: req.body.people,
+        people: req.body.seats,
         time: req.body.time
     }
     console.log('reservation done,', reservation)
-    const newReservation = new Reservation({...reservation})
+    const newReservation = new Reservation({ ...reservation })
 
     newReservation.save()
-    .then( reservation => {
-        res.send({
-            status: 'success',
-            data: {
-                reservation
-            }
+        .then(async reservation => {
+            await res.send({
+                status: 'success',
+                data: {
+                    ...reservation
+                }
+            })
         })
-    })
-    .catch(err => {
-        res.status(500).send({
-            status: 'fail',
-            message: 'Exception thorown when trying to create a reservation', err
+        .catch(err => {
+            res.status(500).send({
+                status: 'fail',
+                message: 'Exception thorown when trying to create a reservation', err
+            })
         })
-    })
     console.log(newReservation)
 }
 
