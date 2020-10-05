@@ -37,15 +37,20 @@ const availableTable = async (req, res) =>{
                 status: 'success',
                 data: {
                     "your req": req.params.date,
-                    "avilable_table_18.00 ": AVAILABLE_TABLE - firstTime.length,
+                    "message": 'This is our bookeble tables this date',
+                    "avilable_table_18.00": AVAILABLE_TABLE - firstTime.length,
                     "avilable_table_21.00": AVAILABLE_TABLE - lastTime.length
                 }
             })
         } else{
             res.send({
                 status: 'fail',
-                message: 'no availvle table at this day',
-                available: false,
+                data:{
+                    "available": false,
+                    "message": 'no availvle table at this day',
+                    "avilable_table_18.00": AVAILABLE_TABLE - firstTime.length,
+                    "avilable_table_21.00": AVAILABLE_TABLE - lastTime.length
+                }
             })
         }
     }).catch(err => {
@@ -80,7 +85,7 @@ const store = async (req, res) => {
             await res.send({
                 status: 'success',
                 data: {
-                    ...reservation
+                    reservation
                 }
             })
         })

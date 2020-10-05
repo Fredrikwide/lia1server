@@ -23,7 +23,7 @@ const reservationSchema = new Schema({
     },
     slug: {
         type: String,
-        slug: 'name',
+        slug: 'firstname',
         unique: true,
         slug_padding_size: 4,
     },
