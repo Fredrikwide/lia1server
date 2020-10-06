@@ -37,17 +37,29 @@ const availableTable = async (req, res) => {
                     status: 'success',
                     data: {
                         "your req": req.params.date,
-                        "avilable_table_18.00 ": AVAILABLE_TABLE - firstTime.length,
-                        "avilable_table_21.00": AVAILABLE_TABLE - lastTime.length
+                        avilable_first: AVAILABLE_TABLE - firstTime.length,
+                        avilable_last: AVAILABLE_TABLE - lastTime.length
                     }
                 })
             } else {
                 res.send({
                     status: 'fail',
-                    message: 'no availvle table at this day',
-                    available: false,
+                    data: {
+                        message: 'no available table at this day',
+                        available: false,
+                        avilable_first: AVAILABLE_TABLE - firstTime.length,
+                        avilable_last: AVAILABLE_TABLE - lastTime.length
+
+                    }
                 })
+            }
+        }).catch(err => {
+            res.status(500).send({
+                status: 'fail',
+                message: 'Exception thrown when trying to find table at:' + req.params.date
             })
+        })
+
 }
 
 
