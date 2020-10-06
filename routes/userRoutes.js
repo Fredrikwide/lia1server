@@ -39,10 +39,11 @@ router.post("/register", async (req, res) =>{
                     message: "Enter the same password twice for verification."
                 }
             })
-        }
+        } 
 
         // check if user alredy exist 
         const existingUser = await User.findOne({ email: email });
+        console.log(existingUser)
         if (existingUser){
             res.send({
                 status: 'fail',
@@ -62,17 +63,23 @@ router.post("/register", async (req, res) =>{
         });
 
         // if evrything allright send the user to the frontend 
+        const saveUser = await newUser.save()
         res.send({
             status: 'sucsess',
-            newUser
+            saveUser
         })
-    } catch {
+    } catch (err) {
         res.status(500).json({ error: err.message });
-    }
-})
+      }
+});
 
 
-router.post("/login", async (req, res) => {
+/**
+ * POST login
+ * 
+ */
+
+router.post("/", async (req, res) => {
     try {
         const { email, password } = req.body;
 

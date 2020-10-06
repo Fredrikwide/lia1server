@@ -15,4 +15,4 @@ router.use('/admin', require('./admin'));
 router.use('/login', require('./userRoutes'))
 
 
-module.exports = router;
+module.exports = router; 
