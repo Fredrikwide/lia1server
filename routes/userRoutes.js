@@ -43,7 +43,6 @@ router.post("/register", async (req, res) =>{
 
         // check if user alredy exist 
         const existingUser = await User.findOne({ email: email });
-        console.log(existingUser)
         if (existingUser){
             res.send({
                 status: 'fail',
@@ -69,7 +68,13 @@ router.post("/register", async (req, res) =>{
             saveUser
         })
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500, {
+            status: 'fail',
+            data: {
+                message: err
+            }
+        })
+
       }
 });
 
@@ -79,7 +84,7 @@ router.post("/register", async (req, res) =>{
  * 
  */
 
-router.post("/", async (req, res) => {
+router.post("/login", async (req, res) => {
     try {
         const { email, password } = req.body;
 
@@ -120,6 +125,10 @@ router.delete("/delete", auth, async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
+/**
+ * function if token is valid TRUE OR FALSE
+ */
 
 router.post("/tokenIsValid", async (req, res) => {
     try {
