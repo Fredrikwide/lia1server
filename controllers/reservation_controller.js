@@ -37,21 +37,32 @@ const availableTable = async (req, res) => {
                     status: 'success',
                     data: {
                         "your req": req.params.date,
-                        avilable_first: AVAILABLE_TABLE - firstTime.length,
-                        avilable_last: AVAILABLE_TABLE - lastTime.length
+                        "avilable_table_18.00 ": AVAILABLE_TABLE - firstTime.length,
+                        "avilable_table_21.00": AVAILABLE_TABLE - lastTime.length
                     }
                 })
-            } else {
-                res.send({
-                    status: 'fail',
-                    data: {
-                        message: 'no available table at this day',
-                        available: false,
-                        avilable_first: AVAILABLE_TABLE - firstTime.length,
-                        avilable_last: AVAILABLE_TABLE - lastTime.length
 
-                    }
-                })
+                if (firstTime.length < AVAILABLE_TABLE || lastTime.length < AVAILABLE_TABLE) {
+                    res.send({
+                        status: 'success',
+                        data: {
+                            "your req": req.params.date,
+                            avilable_first: AVAILABLE_TABLE - firstTime.length,
+                            avilable_last: AVAILABLE_TABLE - lastTime.length
+                        }
+                    })
+                } else {
+                    res.send({
+                        status: 'fail',
+                        data: {
+                            message: 'no available table at this day',
+                            available: false,
+                            avilable_first: AVAILABLE_TABLE - firstTime.length,
+                            avilable_last: AVAILABLE_TABLE - lastTime.length
+
+                        }
+                    })
+                }
             }
         }).catch(err => {
             res.status(500).send({
