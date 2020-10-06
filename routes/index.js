@@ -12,6 +12,8 @@ router.get('/', (req, res) => {
 // "url/reservation" will get the function book a table and show if its any avibile table
 router.use('/reservation', require('./reservation'));
 router.use('/admin', require('./admin'));
+
+// will be removd
 router.use('/login', require('./userRoutes'))
 
 
