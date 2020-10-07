@@ -44,5 +44,7 @@ router.post("/validToken", authController.validToken);
 /** When a user is verifide */
 router.get("/", auth, authController.verified)
 
+router.get("/:date", auth, authController.today)
+
 
 module.exports = router;

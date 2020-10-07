@@ -2,6 +2,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
+const Reservation = require('../models/bookingmodel')
 
 
 /**
@@ -163,9 +164,33 @@ const validToken = async (req, res) =>{
 const verified = async (req, res) => {
     const user = await User.findById(req.user);
     res.json({
-        displayName: user.email,
+        email: user.email,
         id: user._id,
     });
+}
+
+
+/** Get todays reservation
+ * 
+ * GET / ADMIN/:date
+ */
+const today = async (req, res) => {
+    Reservation.find({
+        "date": req.params.date,
+    }).then(reservation =>{
+        console.log('this is todays reservation',reservation)
+        res.send({
+            status: 'success',
+            data: {
+                reservation
+            }
+        })
+    }).catch(err => {
+        res.status(500).send({
+            status: 'fail',
+            message: 'Exception thrown when trying to get a reservation', err
+        })
+    })
 }
 
 module.exports = {
@@ -174,4 +199,5 @@ module.exports = {
     remove,
     validToken,
     verified,
+    today,
 }
