@@ -11,6 +11,8 @@ Document link: <https://github.com/Fredrikwide/lia1server>
 
 ## `/admin`
 
+/admin to acces you need to log in
+
 ### `GET /admin/reservation`
 
 Get all reservation in admin mode

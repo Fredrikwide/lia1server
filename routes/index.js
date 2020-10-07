@@ -13,8 +13,6 @@ router.get('/', (req, res) => {
 router.use('/reservation', require('./reservation'));
 router.use('/admin', require('./admin'));
 
-// will be removd
-router.use('/login', require('./userRoutes'))
 
 
 module.exports = router; 

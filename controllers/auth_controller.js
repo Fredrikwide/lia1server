@@ -1,11 +1,16 @@
-const router = require("express").Router();
+// admin controller
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const auth = require("../middleware/auth");
 const User = require("../models/userModel");
 
 
-router.post("/register", async (req, res) =>{
+/**
+ * Create a new admin in DB 
+ * 
+ * POST / create
+ */
+
+const create = async (req, res) =>{
     try{
         // the object that we creata a admin whit
         const {email, password, passwordCheck} = req.body
@@ -76,15 +81,15 @@ router.post("/register", async (req, res) =>{
         })
 
       }
-});
+ }
 
+ /**
+  * Login in admin
+  * 
+  * POST /login 
+  */
 
-/**
- * POST login
- * 
- */
-
-router.post("/login", async (req, res) => {
+ const login =  async (req, res) => {
     try {
         const { email, password } = req.body;
 
@@ -115,22 +120,30 @@ router.post("/login", async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-});
+ }
 
-router.delete("/delete", auth, async (req, res) => {
+
+ /** 
+  * Remove a admin
+  * 
+  * DELETE /delete
+  */
+ const remove = async (req, res) => {
     try {
         const deletedUser = await User.findByIdAndDelete(req.user);
         res.json(deletedUser);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-});
+ }
 
-/**
- * function if token is valid TRUE OR FALSE
- */
+ /**
+  * Check if token is Valid 
+  * 
+  * POST / validToken
+  */
 
-router.post("/tokenIsValid", async (req, res) => {
+const validToken = async (req, res) =>{
     try {
         const token = req.header("x-auth-token");
         if (!token) return res.json(false);
@@ -145,14 +158,20 @@ router.post("/tokenIsValid", async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-});
+}
 
-router.get("/", auth, async (req, res) => {
+const verified = async (req, res) => {
     const user = await User.findById(req.user);
     res.json({
         displayName: user.email,
         id: user._id,
     });
-});
+}
 
-module.exports = router;
+module.exports = {
+    create,
+    login,
+    remove,
+    validToken,
+    verified,
+}
