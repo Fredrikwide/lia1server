@@ -38,8 +38,8 @@ const availableTable = async (req, res) =>{
                 data: {
                     "your req": req.params.date,
                     "message": 'This is our bookeble tables this date',
-                    "avilable_table_18.00": AVAILABLE_TABLE - firstTime.length,
-                    "avilable_table_21.00": AVAILABLE_TABLE - lastTime.length
+                    "avilable_18": AVAILABLE_TABLE - firstTime.length,
+                    "avilable_21": AVAILABLE_TABLE - lastTime.length
                 }
             })
         } else{
@@ -48,8 +48,8 @@ const availableTable = async (req, res) =>{
                 data:{
                     "available": false,
                     "message": 'no availvle table at this day',
-                    "avilable_table_18.00": AVAILABLE_TABLE - firstTime.length,
-                    "avilable_table_21.00": AVAILABLE_TABLE - lastTime.length
+                    "avilable_18": AVAILABLE_TABLE - firstTime.length,
+                    "avilable_21": AVAILABLE_TABLE - lastTime.length
                 }
             })
         }
@@ -74,9 +74,16 @@ const store = async (req, res) => {
         email: req.body.email,
         phone: req.body.phone,
         date: Date.parse(req.body.date),
-        people: req.body.seats,
+        people: req.body.people,
         time: req.body.time
     }
+
+    // look if its avabile table 
+
+    const firstTime = []
+    const lastTime = []
+
+
     console.log('reservation done,', reservation)
     const newReservation = new Reservation({ ...reservation })
 
