@@ -1,5 +1,6 @@
 // admin controller
 const Reservation = require('../models/bookingmodel')
+const models = require('../models');
 
 
 /**
@@ -121,14 +122,27 @@ const update = async (req, res) =>{
  *  DELETE /:reservation
  */
 const destroy = async (req, res) =>{
-    Reservation.findOneAndDelete(getReservationFilter(req.params.reservation))
-    .then(() => res.json('deleted reservation!'))
-    .catch(err => {
-        res.status(500).send({
-            status: 'fail',
-            message: 'Exception thorown when trying to delete a reservation'
-        })
-    })
+    try {
+        const reservation = await models.Reservation.findByIdAndDelete(req.params.id);
+        console.log(reservation)
+
+		if (!reservation) {
+			return res.sendStatus(404);
+		}
+
+		return res.send({
+			status: 'success',
+			data: {
+				reservation,
+			}
+		});
+
+	} catch (error) {
+		return res.status(500).send({
+			status: 'error',
+			message: error.message,
+		});
+	}
 }
 
 

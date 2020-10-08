@@ -78,17 +78,17 @@ const store = async (req, res) => {
         time: req.body.time
     }
 
-    // look if its avabile table 
-
-    const firstTime = []
-    const lastTime = []
-
-
     console.log('reservation done,', reservation)
     const newReservation = new Reservation({ ...reservation })
 
     newReservation.save()
         .then(async reservation => {
+
+            // look if its avabile table 
+            const firstTime = []
+            const lastTime = []
+            
+        
             await res.send({
                 status: 'success',
                 data: {
