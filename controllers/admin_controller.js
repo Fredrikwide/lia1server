@@ -94,9 +94,11 @@ const store = async (req, res) =>{
  *  PUT /:id
  */
 const update = async (req, res) =>{
-    Reservation.findOneAndUpdate(getReservationFilter(req.params.reservation), req.body, {new:true})
+    
+    Reservation.findByIdAndUpdate((req.params.id), req.body, {new:true})
     
     .then(reservation => {
+        console.log(reservation)
         if(!reservation){
             res.sendStatus(404);
             return;

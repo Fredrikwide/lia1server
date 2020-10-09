@@ -36,15 +36,15 @@ router.post("/create", authController.create);
 router.post("/login", authController.login);
 
 /** delete a admin */
-router.delete("/delete", auth, authController.remove);
+router.delete("/delete", authController.remove);
 
 /**check if a token is valid */
 router.post("/validToken", authController.validToken);
 
 /** When a user is verifide */
-router.get("/", auth, authController.verified)
+router.get("/", authController.verified)
 
-router.get("/:date", auth, authController.today)
+router.get("/:date", authController.today)
 
 
 module.exports = router;
