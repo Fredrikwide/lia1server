@@ -8,22 +8,22 @@ const models = require('../models');
  * 
  *  GET / 
  */
-const index = async (req, res) => {
+const index =  async (req, res) =>{
     Reservation.find()
-        .then(reservations => {
-            res.send({
-                status: 'success',
-                data: {
-                    reservations
-                }
-            })
+    .then(reservations => {
+        res.send({
+            status: 'success',
+            data: {
+                reservations
+            }
         })
-        .catch(err => {
-            res.status(500).send({
-                status: 'fail',
-                message: 'Exception thrown when trying to get all reservation', err
-            })
+    })
+    .catch(err => {
+        res.status(500).send({
+            status: 'fail',
+            message: 'Exception thrown when trying to get all reservation', err
         })
+    })
 }
 
 /**
@@ -31,26 +31,26 @@ const index = async (req, res) => {
  * 
  *  GET /:id
  */
-const show = async (req, res) => {
+const show = async (req, res) =>{
     Reservation.findOne(getReservationFilter(req.params.reservation))
-        .then(reservation => {
-            if (!reservation) {
-                res.sendStatus(404);
-                return;
+    .then(reservation => {
+        if(!reservation){
+            res.sendStatus(404);
+            return;
+        }
+        res.send({
+            status: 'success',
+            data: {
+                reservation
             }
-            res.send({
-                status: 'success',
-                data: {
-                    reservation
-                }
-            })
         })
-        .catch(err => {
-            res.status(500).send({
-                status: 'fail',
-                message: 'Exception thrown when trying to get a reservation', err
-            })
+    })
+    .catch(err => {
+        res.status(500).send({
+            status: 'fail',
+            message: 'Exception thrown when trying to get a reservation', err
         })
+    })
 }
 
 /**
@@ -58,7 +58,7 @@ const show = async (req, res) => {
  * 
  *  POST /:id
  */
-const store = async (req, res) => {
+const store = async (req, res) =>{
     const reservation = {
         name: req.body.name,
         email: req.body.email,
@@ -68,23 +68,23 @@ const store = async (req, res) => {
         time: req.body.time
     }
     console.log('reservation done,', reservation)
-    const newReservation = new Reservation({ ...reservation })
+    const newReservation = new Reservation({...reservation})
 
     newReservation.save()
-        .then(reservation => {
-            res.send({
-                status: 'success',
-                data: {
-                    reservation
-                }
-            })
+    .then( reservation => {
+        res.send({
+            status: 'success',
+            data: {
+                reservation
+            }
         })
-        .catch(err => {
-            res.status(500).send({
-                status: 'fail',
-                message: 'Exception thrown when trying to create a reservation', err
-            })
+    })
+    .catch(err => {
+        res.status(500).send({
+            status: 'fail',
+            message: 'Exception thrown when trying to create a reservation', err
         })
+    })
     console.log(newReservation)
 }
 
@@ -93,27 +93,29 @@ const store = async (req, res) => {
  * 
  *  PUT /:id
  */
-const update = async (req, res) => {
-    Reservation.findOneAndUpdate(getReservationFilter(req.params.reservation), req.body, { new: true })
-
-        .then(reservation => {
-            if (!reservation) {
-                res.sendStatus(404);
-                return;
+const update = async (req, res) =>{
+    
+    Reservation.findByIdAndUpdate((req.params.id), req.body, {new:true})
+    
+    .then(reservation => {
+        console.log(reservation)
+        if(!reservation){
+            res.sendStatus(404);
+            return;
+        }
+        res.send({
+            status: 'success',
+            data: {
+                reservation
             }
-            res.send({
-                status: 'success',
-                data: {
-                    reservation
-                }
-            })
         })
-        .catch(err => {
-            res.status(500).send({
-                status: 'fail',
-                message: 'Exception thrown when trying to update a reservation', err
-            })
+    })
+    .catch(err => {
+        res.status(500).send({
+            status: 'fail',
+            message: 'Exception thrown when trying to update a reservation', err
         })
+    })
 }
 
 /**
@@ -121,15 +123,28 @@ const update = async (req, res) => {
  * 
  *  DELETE /:reservation
  */
-const destroy = async (req, res) => {
-    await Reservation.findByIdAndDelete(req.params.id)
-        .then(() => res.json('deleted reservation!'))
-        .catch(err => {
-            res.status(500).send({
-                status: 'fail',
-                message: 'Exception thorown when trying to delete a reservation'
-            })
-        })
+const destroy = async (req, res) =>{
+    try {
+        const reservation = await models.Reservation.findByIdAndDelete(req.params.id);
+        console.log(reservation)
+
+		if (!reservation) {
+			return res.sendStatus(404);
+		}
+
+		return res.send({
+			status: 'success',
+			data: {
+				reservation,
+			}
+		});
+
+	} catch (error) {
+		return res.status(500).send({
+			status: 'error',
+			message: error.message,
+		});
+	}
 }
 
 
@@ -144,17 +159,17 @@ const destroy = async (req, res) => {
  * `slug` attribute.
  */
 
-const getReservationFilter = reservation => {
+const getReservationFilter = reservation =>{
     return (/^[0-9a-fA-F]{24}$/.test(reservation))
-        ? { _id: reservation }
-        : { slug: reservation };
+		? { _id: reservation }
+		: { slug: reservation };
 }
 
 
 module.exports = {
-    index,
-    show,
-    store,
-    update,
+	index,
+	show,
+	store,
+	update,
     destroy,
 }
