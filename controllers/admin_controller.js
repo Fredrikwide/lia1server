@@ -1,5 +1,6 @@
 // admin controller
 const Reservation = require('../models/bookingmodel')
+const models = require('../models');
 
 
 /**
