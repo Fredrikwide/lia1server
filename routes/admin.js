@@ -9,22 +9,22 @@ const adminController = require('../controllers/admin_controller');
 const authController = require('../controllers/auth_controller')
 
 // auth 
-const auth = require("../middleware/auth");
+//const auth = require("../middleware/auth");
 
 /* Get all reservation */
-router.get('/reservation/', auth, adminController.index);
+router.get('/reservation/', adminController.index);
 
 /* Get a reservation by id */
-router.get('/reservation/:id', auth,  adminController.show);
+router.get('/reservation/:id', adminController.show);
 
 /* Create a new reservation */
-router.post('/reservation', auth, adminController.store);
+router.post('/reservation', adminController.store);
 
 /* Update a reservation */
-router.put('/reservation/:id',auth,  adminController.update);
+router.put('/reservation/:id', adminController.update);
 
 /* Delete a reservation */
-router.delete('/reservation/:id', auth, adminController.destroy);
+router.delete('/reservation/:id', adminController.destroy);
 
 
 // auth part
@@ -36,15 +36,15 @@ router.post("/create", authController.create);
 router.post("/login", authController.login);
 
 /** delete a admin */
-router.delete("/delete", auth, authController.remove);
+router.delete("/delete", authController.remove);
 
 /**check if a token is valid */
 router.post("/validToken", authController.validToken);
 
 /** When a user is verifide */
-router.get("/", auth, authController.verified)
+//router.get("/", authController.verified)
 
-router.get("/:date", auth, authController.today)
+router.get("/:date", authController.today)
 
 
 module.exports = router;

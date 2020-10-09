@@ -11,15 +11,15 @@ const Reservation = require('../models/bookingmodel')
  * POST / create
  */
 
-const create = async (req, res) =>{
-    try{
+const create = async (req, res) => {
+    try {
         // the object that we creata a admin whit
-        const {email, password, passwordCheck} = req.body
+        const { email, password, passwordCheck } = req.body
 
         // validate the data 
 
         //validate if evry field has data
-        if (!email || !password || !passwordCheck ) {
+        if (!email || !password || !passwordCheck) {
             res.send({
                 status: 'fail',
                 data: {
@@ -28,7 +28,7 @@ const create = async (req, res) =>{
             })
         }
         // check the lencht of the password
-        if (password.length < 5){
+        if (password.length < 5) {
             res.send({
                 status: 'fail',
                 data: {
@@ -38,18 +38,18 @@ const create = async (req, res) =>{
         }
 
         // look if the password check and the password is the same
-        if (password !== passwordCheck){
+        if (password !== passwordCheck) {
             res.send({
                 status: 'fail',
                 data: {
                     message: "Enter the same password twice for verification."
                 }
             })
-        } 
+        }
 
         // check if user alredy exist 
         const existingUser = await User.findOne({ email: email });
-        if (existingUser){
+        if (existingUser) {
             res.send({
                 status: 'fail',
                 data: {
@@ -63,8 +63,8 @@ const create = async (req, res) =>{
         const passwordHash = await bcrypt.hash(password, salt);
 
         const newUser = new User({
-        email,
-        password: passwordHash,
+            email,
+            password: passwordHash,
         });
 
         // if evrything allright send the user to the frontend 
@@ -81,16 +81,16 @@ const create = async (req, res) =>{
             }
         })
 
-      }
- }
+    }
+}
 
- /**
-  * Login in admin
-  * 
-  * POST /login 
-  */
+/**
+ * Login in admin
+ * 
+ * POST /login 
+ */
 
- const login =  async (req, res) => {
+const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
@@ -100,7 +100,7 @@ const create = async (req, res) =>{
         }
 
         const user = await User.findOne({ email: email });
-        
+
         if (!user) {
             return res
                 .status(400)
@@ -121,30 +121,30 @@ const create = async (req, res) =>{
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
- }
+}
 
 
- /** 
-  * Remove a admin
-  * 
-  * DELETE /delete
-  */
- const remove = async (req, res) => {
+/** 
+ * Remove a admin
+ * 
+ * DELETE /delete
+ */
+const remove = async (req, res) => {
     try {
         const deletedUser = await User.findByIdAndDelete(req.user);
         res.json(deletedUser);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
- }
+}
 
- /**
-  * Check if token is Valid 
-  * 
-  * POST / validToken
-  */
+/**
+ * Check if token is Valid 
+ * 
+ * POST / validToken
+ */
 
-const validToken = async (req, res) =>{
+const validToken = async (req, res) => {
     try {
         const token = req.header("x-auth-token");
         if (!token) return res.json(false);
@@ -162,11 +162,16 @@ const validToken = async (req, res) =>{
 }
 
 const verified = async (req, res) => {
-    const user = await User.findById(req.user);
-    res.json({
-        email: user.email,
-        id: user._id,
-    });
+    try {
+        const user = await User.findById(req.user);
+        res.json({
+            email: user.email,
+            id: user._id,
+        })
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+
 }
 
 
@@ -177,8 +182,8 @@ const verified = async (req, res) => {
 const today = async (req, res) => {
     Reservation.find({
         "date": req.params.date,
-    }).then(reservation =>{
-        console.log('this is todays reservation',reservation)
+    }).then(reservation => {
+        console.log('this is todays reservation', reservation)
         res.send({
             status: 'success',
             data: {
@@ -198,6 +203,6 @@ module.exports = {
     login,
     remove,
     validToken,
-    verified,
+    //verified,
     today,
 }
