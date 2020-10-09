@@ -15,13 +15,13 @@ const authController = require('../controllers/auth_controller')
 router.get('/reservation/', adminController.index);
 
 /* Get a reservation by id */
-router.get('/reservation/:id', adminController.show);
+router.get('/reservation/:id',  adminController.show);
 
 /* Create a new reservation */
 router.post('/reservation', adminController.store);
 
 /* Update a reservation */
-router.put('/reservation/:id', adminController.update);
+router.put('/reservation/:id',  adminController.update);
 
 /* Delete a reservation */
 router.delete('/reservation/:id', adminController.destroy);
