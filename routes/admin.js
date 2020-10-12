@@ -7,10 +7,10 @@ const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/admin_controller');
 const authController = require('../controllers/auth_controller')
-const auth = require("../middleware/auth");
+
 
 // auth 
-//const auth = require("../middleware/auth");
+const auth = require("../middleware/auth");
 
 /* Get all reservation */
 router.get('/reservation/', adminController.index);
