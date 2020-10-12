@@ -7,6 +7,7 @@ const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/admin_controller');
 const authController = require('../controllers/auth_controller')
+const auth = require("../middleware/auth");
 
 // auth 
 //const auth = require("../middleware/auth");
@@ -42,7 +43,7 @@ router.delete("/delete", authController.remove);
 router.post("/validToken", authController.validToken);
 
 /** When a user is verifide */
-//router.get("/", authController.verified)
+router.get("/", auth, authController.verified)
 
 router.get("/:date", authController.today)
 

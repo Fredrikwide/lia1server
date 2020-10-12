@@ -203,6 +203,6 @@ module.exports = {
     login,
     remove,
     validToken,
-    //verified,
+    verified,
     today,
 }

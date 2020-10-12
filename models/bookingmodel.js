@@ -57,6 +57,8 @@ const reservationSchema = new Schema({
 })
 
 
+reservationSchema.index({createdAt:1}, {exppireAfterSeconds: 7862400})
+
 const Reservation = mongoose.model('Reservation', reservationSchema);
 
 module.exports = Reservation;
