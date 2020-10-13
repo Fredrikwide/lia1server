@@ -48,13 +48,14 @@ const reservationSchema = new Schema({
         min: 1,
         max: 6,
     },
+    gdpr: {
+        type: Boolean,
+        required: true
+    },
     time: {
         type: String,
         required: true
     },
-    gdpr: {
-        type: String,
-    }
 }, {
     timestamps: true
 })

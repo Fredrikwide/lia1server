@@ -110,7 +110,8 @@ const store = async (req, res) => {
         phone: req.body.phone,
         date: Date.parse(req.body.date),
         people: req.body.people,
-        time: req.body.time
+        time: req.body.time,
+        gdpr: req.body.gdpr,
     }
 
     console.log('reservation done,', reservation)
