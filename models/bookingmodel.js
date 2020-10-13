@@ -51,6 +51,9 @@ const reservationSchema = new Schema({
     time: {
         type: String,
         required: true
+    },
+    gdpr: {
+        type: String,
     }
 }, {
     timestamps: true

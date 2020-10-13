@@ -5,6 +5,7 @@ const Reservation = require('../models/bookingmodel')
 
 
 const AVAILABLE_TABLE = 15
+const MAX_RESERVATION = 15
 
 
 /**
@@ -12,6 +13,40 @@ const AVAILABLE_TABLE = 15
  */
 
 
+ const avabileTime = async (req, res) =>{
+    Reservation.find({
+        "date": req.params.date,
+        "time": req.params.time
+    })
+    .then(reservation =>{
+        console.log(reservation.length, req.params.time)
+        if(reservation.length !== MAX_RESERVATION) {
+           res.send({
+               status: "success",
+               data: {
+                avilable: true,
+               }
+           })
+       }
+        else{
+            res.send({
+                status: "fail",
+                data: {
+                    avilable: false,
+               }
+            })
+        }
+    }).catch(err => {
+        res.status(500).send({
+            status: 'fail',
+            message: 'Exception thrown when trying to find table at:' + req.params.date
+        })
+    })
+ }
+
+
+
+ // first look if time avilable
 const availableTable = async (req, res) =>{
     Reservation.find({
         "date": req.params.date,
@@ -36,7 +71,7 @@ const availableTable = async (req, res) =>{
             res.send({
                 status: 'success',
                 data: {
-                    "your req": req.params.date,
+                    "available": true,
                     "message": 'This is our bookeble tables this date',
                     "avilable_18": AVAILABLE_TABLE - firstTime.length,
                     "avilable_21": AVAILABLE_TABLE - lastTime.length
@@ -108,4 +143,5 @@ const store = async (req, res) => {
 module.exports = {
     availableTable,
     store,
+    avabileTime,
 }
