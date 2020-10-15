@@ -2,6 +2,7 @@
 
 //const models = require('../models');
 const Reservation = require('../models/bookingmodel')
+const moment = require('moment');
 
 
 const AVAILABLE_TABLE = 15
@@ -14,27 +15,21 @@ const MAX_RESERVATION = 15
 
 
  const avabileTime = async (req, res) =>{
+
     Reservation.find({
-        "date": req.params.date,
-        "time": req.params.time
+        "date": moment(req.date).format('YYYY-MM-DD'),
+        "time": req.time
     })
     .then(reservation =>{
-        console.log(reservation.length, req.params.time)
         if(reservation.length !== MAX_RESERVATION) {
-           res.send({
-               status: "success",
-               data: {
-                avilable: true,
-               }
-           })
+            console.log('det finns ledig tid')
+            return true
+    
        }
         else{
-            res.send({
-                status: "fail",
-                data: {
-                    avilable: false,
-               }
-            })
+            console.log('det finns tyvärr inte ledig tid')   
+            return false
+                
         }
     }).catch(err => {
         res.status(500).send({
@@ -43,8 +38,6 @@ const MAX_RESERVATION = 15
         })
     })
  }
-
-
 
  // first look if time avilable
 const availableTable = async (req, res) =>{
@@ -59,7 +52,7 @@ const availableTable = async (req, res) =>{
  
         // check if the reservation is 18.00 or 21.00
         reservations.filter( reservation => {
-            if(reservation.time === "18.00"){
+            if(reservation.time === "18:00"){
                 firstTime.push(reservation)
                 
             } else {
@@ -113,18 +106,19 @@ const store = async (req, res) => {
         time: req.body.time,
         gdpr: req.body.gdpr,
     }
+    
+   avabileTime(reservation)
+    
+    console.log('this is lookIfAvabileTime', avabileTime(reservation))
+    if (avabileTime){
+        console.log('jag kör detta för lookIfAvabileTime är true')
+    }
 
     console.log('reservation done,', reservation)
     const newReservation = new Reservation({ ...reservation })
 
     newReservation.save()
-        .then(async reservation => {
-
-            // look if its avabile table 
-            const firstTime = []
-            const lastTime = []
-            
-        
+        .then(async reservation => {        
             await res.send({
                 status: 'success',
                 data: {
