@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 const slug = require('mongoose-slug-generator');
 
-const Schema = mongoose.Schema;
 
 //tell mongoose to use the slug package as a plugin
 mongoose.plugin(slug);
+
 
 const reservationSchema = new Schema({
     firstname: {
@@ -20,12 +21,6 @@ const reservationSchema = new Schema({
         trim: true,
         minlength: 2,
         unique: false
-    },
-    slug: {
-        type: String,
-        slug: 'firstname',
-        unique: true,
-        slug_padding_size: 4,
     },
     email: {
         type: String,
@@ -47,6 +42,12 @@ const reservationSchema = new Schema({
         type: Number,
         min: 1,
         max: 6,
+    },
+    slug: {
+        type: String,
+        slug: 'firstname',
+        unique: true,
+        slug_padding_size: 4,
     },
     gdpr: {
         type: Boolean,

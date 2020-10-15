@@ -3,41 +3,34 @@
 //const models = require('../models');
 const Reservation = require('../models/bookingmodel')
 const moment = require('moment');
+const models = require('../models');
 
 
 const AVAILABLE_TABLE = 15
 const MAX_RESERVATION = 15
 
 
-/**
- * Look for available time 2020-09-30T18:00:00.000+00:00
- */
+// function that check if available times
+const areTablesFree = async (date, time) =>{
+    try{
+        const ourReservation = await models.Reservation.find({
+            "date": date,
+            "time": time
+        })
 
-
- const avabileTime = async (req, res) =>{
-
-    Reservation.find({
-        "date": moment(req.date).format('YYYY-MM-DD'),
-        "time": req.time
-    })
-    .then(reservation =>{
-        if(reservation.length !== MAX_RESERVATION) {
-            console.log('det finns ledig tid')
+        if(ourReservation.length < MAX_RESERVATION) {
+            console.log('Succsess, you can book this time')
             return true
-    
        }
         else{
-            console.log('det finns tyvärr inte ledig tid')   
+            console.log('Sorry, this time is fully booked, try another time')   
             return false
-                
         }
-    }).catch(err => {
-        res.status(500).send({
-            status: 'fail',
-            message: 'Exception thrown when trying to find table at:' + req.params.date
-        })
-    })
- }
+    } catch (error){
+        console.log('Sorry')
+    }
+}
+
 
  // first look if time avilable
 const availableTable = async (req, res) =>{
@@ -107,36 +100,39 @@ const store = async (req, res) => {
         gdpr: req.body.gdpr,
     }
     
-   avabileTime(reservation)
-    
-    console.log('this is lookIfAvabileTime', avabileTime(reservation))
-    if (avabileTime){
-        console.log('jag kör detta för lookIfAvabileTime är true')
+
+    const lookIfAvailableTime = await areTablesFree(reservation.date, reservation.time)
+
+    // if not Available Time return fail and 
+    if (!lookIfAvailableTime){
+        res.send({
+            status: 'fail',
+            data: {
+                message: "Sorry, this time is fully booked, try another time"
+            }
+        })        
+    } else{
+        console.log('reservation done,', reservation)
+        const newReservation = new Reservation({ ...reservation })
+        // save the data to DB
+        newReservation.save()
+            .then(async reservation => {        
+                await res.send({
+                    status: 'success',
+                    data: {
+                        reservation
+                    }
+                })
+            }).catch(err => {
+                res.status(500).send({
+                    status: 'fail',
+                    message: 'Exception thorown when trying to create a reservation', err
+                })
+            })
     }
-
-    console.log('reservation done,', reservation)
-    const newReservation = new Reservation({ ...reservation })
-
-    newReservation.save()
-        .then(async reservation => {        
-            await res.send({
-                status: 'success',
-                data: {
-                    reservation
-                }
-            })
-        })
-        .catch(err => {
-            res.status(500).send({
-                status: 'fail',
-                message: 'Exception thorown when trying to create a reservation', err
-            })
-        })
-    console.log(newReservation)
 }
 
 module.exports = {
     availableTable,
     store,
-    avabileTime,
 }

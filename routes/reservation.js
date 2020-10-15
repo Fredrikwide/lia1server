@@ -12,7 +12,6 @@
  //** Create a new reservation  on frontend */
  router.post('/', reservationController.store)
  router.get('/:date', reservationController.availableTable)
- router.get('/:date/:time', reservationController.avabileTime)
 
 
 

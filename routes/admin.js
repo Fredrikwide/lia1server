@@ -18,8 +18,6 @@ router.get('/reservation/', adminController.index);
 /* Get a reservation by id */
 router.get('/reservation/:id',  adminController.show);
 
-/* Create a new reservation */
-router.post('/reservation', adminController.store);
 
 /* Update a reservation */
 router.put('/reservation/:id',  adminController.update);
