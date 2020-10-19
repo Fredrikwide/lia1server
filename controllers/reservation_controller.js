@@ -117,7 +117,8 @@ const store = async (req, res) => {
         gdpr: req.body.gdpr,
     }
     const time = await timeHasPassed(reservation.date, reservation.time)
-    console.log(time)
+
+    // check if time has passed
     if (!time) {
         res.send({
             status: 'fail',
