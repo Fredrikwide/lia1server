@@ -34,7 +34,7 @@ const reservationSchema = new Schema({
         maxlength: 12
     },
     date: {
-        type: Date,
+        type: String,
         default: Date.now(),
         require: true
     },

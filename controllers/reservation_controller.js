@@ -5,10 +5,29 @@ const Reservation = require('../models/bookingmodel')
 const moment = require('moment');
 const models = require('../models');
 
-
 const AVAILABLE_TABLE = 15
 const MAX_RESERVATION = 15
 
+
+
+const timeHasPassed = async (date, time) =>{
+    try{
+        //2020-10-19T13:36:02+00:00
+        const convertedTime = Date.parse(`${date}T${time}:00+02:00`)
+
+        // if time has passed return false
+        if(Date.now() > convertedTime){
+            return false
+            
+        } 
+        // if time has not passed return false
+        else {
+            return true
+        }
+    } catch(error){
+        console.log('sorry')
+    }
+}
 
 // function that check if available times
 const areTablesFree = async (date, time) =>{
@@ -19,11 +38,9 @@ const areTablesFree = async (date, time) =>{
         })
 
         if(ourReservation.length < MAX_RESERVATION) {
-            console.log('Succsess, you can book this time')
             return true
        }
         else{
-            console.log('Sorry, this time is fully booked, try another time')   
             return false
         }
     } catch (error){
@@ -94,10 +111,20 @@ const store = async (req, res) => {
         lastname: req.body.lastname,
         email: req.body.email,
         phone: req.body.phone,
-        date: Date.parse(req.body.date),
+        date: req.body.date,
         people: req.body.people,
         time: req.body.time,
         gdpr: req.body.gdpr,
+    }
+    const time = await timeHasPassed(reservation.date, reservation.time)
+    console.log(time)
+    if (!time) {
+        res.send({
+            status: 'fail',
+            data: {
+                message: "Sorry, time has passed"
+            }
+        })        
     }
     
 
