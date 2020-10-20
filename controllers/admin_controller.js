@@ -58,30 +58,32 @@ const show = async (req, res) =>{
  * 
  *  PUT /:id
  */
-const update = async (req, res) =>{
-    
-    Reservation.findByIdAndUpdate((req.params.id), req.body, {new:true})
-    
-    .then(reservation => {
-        console.log(reservation)
-        if(!reservation){
-            res.sendStatus(404);
-            return;
-        }
-        res.send({
-            status: 'success',
-            data: {
-                reservation
-            }
-        })
-    })
-    .catch(err => {
-        res.status(500).send({
-            status: 'fail',
-            message: 'Exception thrown when trying to update a reservation', err
-        })
-    })
-}
+const update = async (req, res) => {
+    try{
+        const reservation = await models.Reservation.findByIdAndUpdate(
+			req.params.id,
+			req.body,
+			{ new: true }
+        );
+        
+        if (!reservation) {
+			return res.sendStatus(404);
+		}
+
+		return res.send({
+			status: 'success',
+			data: {
+				reservation,
+			}
+		});
+
+    } catch (error){
+        return res.status(500).send({
+			status: 'error',
+			message: error.message,
+		});
+    }
+}  
 
 /**
  *  Delete a reservation
@@ -90,7 +92,7 @@ const update = async (req, res) =>{
  */
 const destroy = async (req, res) =>{
     try {
-        const reservation = await models.Reservation.findOneAndRemove(req.params.id);
+        const reservation = await models.Reservation.findByIdAndDelete(req.params.id);
 
 		if (!reservation) {
 			return res.sendStatus(404);
