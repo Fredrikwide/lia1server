@@ -113,17 +113,18 @@ const availableTable = async (req, res) => {
                         })
                     }
                 }
-            }).catch(err => {
-                res.status(500).send({
-                    status: 'fail',
-                    data: {
-                        "available": false,
-                        "message": 'no availvle table at this day',
-                        "avilable_18": AVAILABLE_TABLE - firstTime.length,
-                        "avilable_21": AVAILABLE_TABLE - lastTime.length
-                    }
-                })
+            }
+        }).catch(err => {
+            res.status(500).send({
+                status: 'fail',
+                data: {
+                    "available": false,
+                    "message": 'no availvle table at this day',
+                    "avilable_18": AVAILABLE_TABLE - firstTime.length,
+                    "avilable_21": AVAILABLE_TABLE - lastTime.length
+                }
             })
+        })
 
 }
 
