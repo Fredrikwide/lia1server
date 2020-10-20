@@ -25,7 +25,10 @@ const timeHasPassed = async (date, time) =>{
             return true
         }
     } catch(error){
-        console.log('sorry')
+        res.status(500).send({
+            status: 'fail',
+            message: error
+        })
     }
 }
 
@@ -44,7 +47,10 @@ const areTablesFree = async (date, time) =>{
             return false
         }
     } catch (error){
-        console.log('Sorry')
+        res.status(500).send({
+            status: 'fail',
+            message: error
+        })
     }
 }
 

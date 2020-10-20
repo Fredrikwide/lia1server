@@ -32,7 +32,7 @@ const index =  async (req, res) =>{
  *  GET /:id
  */
 const show = async (req, res) =>{
-    Reservation.findOne(getReservationFilter(req.params.reservation))
+    Reservation.findOne(req.params.reservation)
     .then(reservation => {
         if(!reservation){
             res.sendStatus(404);
@@ -90,8 +90,7 @@ const update = async (req, res) =>{
  */
 const destroy = async (req, res) =>{
     try {
-        const reservation = await models.Reservation.findByIdAndDelete(req.params.id);
-        console.log(reservation)
+        const reservation = await models.Reservation.findOneAndRemove(req.params.id);
 
 		if (!reservation) {
 			return res.sendStatus(404);
