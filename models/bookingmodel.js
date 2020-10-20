@@ -34,7 +34,7 @@ const reservationSchema = new Schema({
         maxlength: 12
     },
     date: {
-        type: String,
+        type: Date,
         default: Date.now(),
         require: true
     },
@@ -62,7 +62,7 @@ const reservationSchema = new Schema({
 })
 
 
-reservationSchema.index({createdAt:1}, {exppireAfterSeconds: 7862400})
+reservationSchema.index({ createdAt: 1 }, { exppireAfterSeconds: 7862400 })
 
 const Reservation = mongoose.model('Reservation', reservationSchema);
 
