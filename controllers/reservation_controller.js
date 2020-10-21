@@ -10,21 +10,21 @@ const MAX_RESERVATION = 15
 
 
 
-const timeHasPassed = async (date, time) =>{
-    try{
+const timeHasPassed = async (date, time) => {
+    try {
         //2020-10-19T13:36:02+00:00
         const convertedTime = Date.parse(`${date}T${time}:00+02:00`)
 
         // if time has passed return false
-        if(Date.now() > convertedTime){
+        if (Date.now() > convertedTime) {
             return false
-            
-        } 
+
+        }
         // if time has not passed return false
         else {
             return true
         }
-    } catch(error){
+    } catch (error) {
         res.status(500).send({
             status: 'fail',
             message: error
@@ -33,20 +33,20 @@ const timeHasPassed = async (date, time) =>{
 }
 
 // function that check if available times
-const areTablesFree = async (date, time) =>{
-    try{
+const areTablesFree = async (date, time) => {
+    try {
         const ourReservation = await models.Reservation.find({
             "date": date,
             "time": time
         })
 
-        if(ourReservation.length < MAX_RESERVATION) {
+        if (ourReservation.length < MAX_RESERVATION) {
             return true
-       }
-        else{
+        }
+        else {
             return false
         }
-    } catch (error){
+    } catch (error) {
         res.status(500).send({
             status: 'fail',
             message: error
@@ -55,55 +55,84 @@ const areTablesFree = async (date, time) =>{
 }
 
 
- // first look if time avilable
-const availableTable = async (req, res) =>{
+// first look if time avilable
+const availableTable = async (req, res) => {
     Reservation.find({
         "date": req.params.date,
     })
-    .then(reservations => {
-        //18.00
-        const firstTime = []
-        //21.00
-        const lastTime = []
- 
-        // check if the reservation is 18.00 or 21.00
-        reservations.filter( reservation => {
-            if(reservation.time === "18:00"){
-                firstTime.push(reservation)
-                
-            } else {
-                lastTime.push(reservation)
-            }
-        })
-        
-        if(firstTime.length < AVAILABLE_TABLE || lastTime.length < AVAILABLE_TABLE ) {
-            res.send({
-                status: 'success',
-                data: {
-                    "available": true,
-                    "message": 'This is our bookeble tables this date',
-                    "avilable_18": AVAILABLE_TABLE - firstTime.length,
-                    "avilable_21": AVAILABLE_TABLE - lastTime.length
+        .then(reservations => {
+            //18.00
+            const firstTime = []
+            //21.00
+            const lastTime = []
+
+            // check if the reservation is 18.00 or 21.00
+            reservations.filter(reservation => {
+                if (reservation.time === "18:00") {
+                    firstTime.push(reservation)
+
+                } else {
+                    lastTime.push(reservation)
                 }
             })
-        } else{
-            res.send({
+
+            if (firstTime.length < AVAILABLE_TABLE || lastTime.length < AVAILABLE_TABLE) {
+                res.send({
+                    status: 'success',
+                    data: {
+                        "available": true,
+                        "message": 'This is our bookeble tables this date',
+                        "avilable_18": AVAILABLE_TABLE - firstTime.length,
+                        "avilable_21": AVAILABLE_TABLE - lastTime.length
+                    }
+                })
+
+                if (firstTime.length < AVAILABLE_TABLE || lastTime.length < AVAILABLE_TABLE) {
+                    res.send({
+                        status: 'success',
+                        data: {
+                            "your req": req.params.date,
+                            "avilable_table_18.00 ": AVAILABLE_TABLE - firstTime.length,
+                            "avilable_table_21.00": AVAILABLE_TABLE - lastTime.length
+                        }
+                    })
+
+                    if (firstTime.length < AVAILABLE_TABLE || lastTime.length < AVAILABLE_TABLE) {
+                        res.send({
+                            status: 'success',
+                            data: {
+                                "your req": req.params.date,
+                                avilable_first: AVAILABLE_TABLE - firstTime.length,
+                                avilable_last: AVAILABLE_TABLE - lastTime.length
+                            }
+                        })
+                    } else {
+                        res.send({
+                            status: 'fail',
+                            data: {
+                                message: 'no available table at this day',
+                                available: false,
+                                avilable_first: AVAILABLE_TABLE - firstTime.length,
+                                avilable_last: AVAILABLE_TABLE - lastTime.length
+
+                            }
+                        })
+                    }
+                }
+            }
+        }).catch(err => {
+            res.status(500).send({
                 status: 'fail',
-                data:{
+                data: {
                     "available": false,
                     "message": 'no availvle table at this day',
                     "avilable_18": AVAILABLE_TABLE - firstTime.length,
                     "avilable_21": AVAILABLE_TABLE - lastTime.length
                 }
             })
-        }
-    }).catch(err => {
-        res.status(500).send({
-            status: 'fail',
-            message: 'Exception thrown when trying to find table at:' + req.params.date
         })
-    })
- }
+
+}
 
 
 /**
@@ -131,26 +160,26 @@ const store = async (req, res) => {
             data: {
                 message: "Sorry, time has passed"
             }
-        })        
+        })
     }
-    
+
 
     const lookIfAvailableTime = await areTablesFree(reservation.date, reservation.time)
 
     // if not Available Time return fail and 
-    if (!lookIfAvailableTime){
+    if (!lookIfAvailableTime) {
         res.send({
             status: 'fail',
             data: {
                 message: "Sorry, this time is fully booked, try another time"
             }
-        })        
-    } else{
+        })
+    } else {
         console.log('reservation done,', reservation)
         const newReservation = new Reservation({ ...reservation })
         // save the data to DB
         newReservation.save()
-            .then(async reservation => {        
+            .then(async reservation => {
                 await res.send({
                     status: 'success',
                     data: {
