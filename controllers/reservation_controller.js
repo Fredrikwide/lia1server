@@ -80,10 +80,10 @@ const availableTable = async (req, res) => {
                 res.send({
                     status: 'success',
                     data: {
-                        "available": true,
-                        "message": 'This is our bookeble tables this date',
-                        "avilable_18": AVAILABLE_TABLE - firstTime.length,
-                        "avilable_21": AVAILABLE_TABLE - lastTime.length
+                        available: true,
+                        message: 'This is our bookeble tables this date',
+                        first: AVAILABLE_TABLE - firstTime.length,
+                        last: AVAILABLE_TABLE - lastTime.length
                     }
                 })
                     } else {
@@ -92,8 +92,8 @@ const availableTable = async (req, res) => {
                             data: {
                                 message: 'no available table at this day',
                                 available: false,
-                                avilable_first: AVAILABLE_TABLE - firstTime.length,
-                                avilable_last: AVAILABLE_TABLE - lastTime.length
+                                first: AVAILABLE_TABLE - firstTime.length,
+                                last: AVAILABLE_TABLE - lastTime.length
 
                             }
                         })
@@ -102,10 +102,10 @@ const availableTable = async (req, res) => {
             res.status(500).send({
                 status: 'fail',
                 data: {
-                    "available": false,
-                    "message": 'no availvle table at this day',
-                    "avilable_18": AVAILABLE_TABLE - firstTime.length,
-                    "avilable_21": AVAILABLE_TABLE - lastTime.length
+                    available: false,
+                    message: 'no availvle table at this day',
+                    first: AVAILABLE_TABLE - firstTime.length,
+                    last: AVAILABLE_TABLE - lastTime.length
                 }
             })
         })
