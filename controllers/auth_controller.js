@@ -96,22 +96,37 @@ const login = async (req, res) => {
 
         // validate
         if (!email || !password) {
-            return res.status(400).json({ msg: "Not all fields have been entered." });
+            return res.status(400).send({
+                status: 'fail',
+                data: {
+                    message: "Please fill in all the field."
+                }
+            })
         }
 
         const user = await User.findOne({ email: email });
 
         if (!user) {
-            return res
-                .status(400)
-                .json({ msg: "No account with this email has been registered." });
+           return res.status(400).send({
+                status: 'fail',
+                data: {
+                    message: "No acount whit this email has beeing registerd."
+                }
+            })
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(400).json({ msg: "Invalid password or username." });
+        if (!isMatch) {
+            return res.status(400).send({
+                status: 'fail',
+                data: {
+                    message: "Invalid password or username."
+                }
+            })
+        }
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-        res.json({
+            return res.send({
             token,
             user: {
                 id: user._id,
@@ -119,7 +134,12 @@ const login = async (req, res) => {
             },
         });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500).send({
+            status: 'fail',
+                data: {
+                    message: err
+                }
+            })
     }
 }
 
