@@ -86,26 +86,6 @@ const availableTable = async (req, res) => {
                         "avilable_21": AVAILABLE_TABLE - lastTime.length
                     }
                 })
-
-                if (firstTime.length < AVAILABLE_TABLE || lastTime.length < AVAILABLE_TABLE) {
-                    res.send({
-                        status: 'success',
-                        data: {
-                            "your req": req.params.date,
-                            "avilable_table_18.00 ": AVAILABLE_TABLE - firstTime.length,
-                            "avilable_table_21.00": AVAILABLE_TABLE - lastTime.length
-                        }
-                    })
-
-                    if (firstTime.length < AVAILABLE_TABLE || lastTime.length < AVAILABLE_TABLE) {
-                        res.send({
-                            status: 'success',
-                            data: {
-                                "your req": req.params.date,
-                                avilable_first: AVAILABLE_TABLE - firstTime.length,
-                                avilable_last: AVAILABLE_TABLE - lastTime.length
-                            }
-                        })
                     } else {
                         res.send({
                             status: 'fail',
@@ -118,8 +98,6 @@ const availableTable = async (req, res) => {
                             }
                         })
                     }
-                }
-            }
         }).catch(err => {
             res.status(500).send({
                 status: 'fail',
