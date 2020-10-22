@@ -2,7 +2,6 @@
 
 //const models = require('../models');
 const Reservation = require('../models/bookingmodel')
-const moment = require('moment');
 const models = require('../models');
 
 const AVAILABLE_TABLE = 15
@@ -12,13 +11,11 @@ const MAX_RESERVATION = 15
 
 const timeHasPassed = async (date, time) => {
     try {
-        //2020-10-19T13:36:02+00:00
-        const convertedTime = Date.parse(`${date}T${time}:00+02:00`)
+        const convertedTime = Date.parse(`${date}T${time}:00+00:00`)
 
         // if time has passed return false
         if (Date.now() > convertedTime) {
             return false
-
         }
         // if time has not passed return false
         else {
@@ -99,15 +96,10 @@ const availableTable = async (req, res) => {
                         })
                     }
         }).catch(err => {
-            res.status(500).send({
-                status: 'fail',
-                data: {
-                    available: false,
-                    message: 'no availvle table at this day',
-                    first: AVAILABLE_TABLE - firstTime.length,
-                    last: AVAILABLE_TABLE - lastTime.length
-                }
-            })
+                res.status(500).send({
+                    status: 'fail',
+                    message: error
+                })
         })
 
 }
@@ -153,7 +145,6 @@ const store = async (req, res) => {
             }
         })
     } else {
-        console.log('reservation done,', reservation)
         const newReservation = new Reservation({ ...reservation })
         // save the data to DB
         newReservation.save()
